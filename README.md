@@ -209,7 +209,7 @@
 
     ```json
     "scripts": {
-      "dev": "webpack --mode development ./leadmanager/frontend/src/index.js --output ./leadmanager/frontend/static/frontend/main.js",
+      "dev": "webpack --mode development --watch ./leadmanager/frontend/src/index.js --output ./leadmanager/frontend/static/frontend/main.js",
       "build": "webpack --mode production ./leadmanager/frontend/src/index.js --output ./leadmanager/frontend/static/frontend/main.js"
     }
     ```
@@ -315,4 +315,5 @@
 
 ### Build the React app
 
-- src/layout/Header.js
+- Create src/layout/Header.js
+- Add header to App.js and render it
