@@ -317,3 +317,5 @@
 
 - Create src/layout/Header.js
 - Add header to App.js and render it
+- Create src/leads/Dashboard.js to contain Form.js and Leads.js
+- Add dashboard to App.js
