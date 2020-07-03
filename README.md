@@ -319,3 +319,49 @@
 - Add header to App.js and render it
 - Create src/leads/Dashboard.js to contain Form.js and Leads.js
 - Add dashboard to App.js
+
+### Implement Redux
+
+- Install redux
+
+  ```sh
+  npm i redux react-redux redux-thunk redux-devtools-extension
+  ```
+
+  - redux-thunk: middleware for async requests
+
+- Create store.js under src
+
+- Create reducers folder, and an index.js file which is the meeting space for all reducers we are going to have
+
+- Import provider and store in App.js: note how provider wraps around all other components in here
+
+  ```javascript
+  class App extends Component {
+    render() {
+      return (
+        <Provider store={store}>
+          <Fragment>
+            <Header />
+            <div className="container">
+              <Dashboard />
+            </div>
+          </Fragment>
+        </Provider>
+      );
+    }
+  }
+  ```
+
+### Setup Leads Reducer
+
+- Create leads.js reducer under reducers
+- Create types.js under actions to organize things
+- Create leads.js under actions
+- install axios
+
+  ```sh
+  npm i axios
+  ```
+
+- Connect Leads component with redux
