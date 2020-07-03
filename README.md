@@ -45,7 +45,7 @@
   class Lead(models.Model):
       name = models.CharField(max_length=100)
       email = models.EmailField(max_length=100, unique=True)
-      message = models.CharField(max_length=500, blank=True) 
+      message = models.CharField(max_length=500, blank=True)
       created_at = models.DateTimeField(auto_now_add=True)
   ```
 
@@ -109,7 +109,7 @@
     ```
 
   - In leads, create `urls.py`.
-  
+
     ```py
     from rest_framework import routers
     from .api import LeadViewSet
@@ -123,7 +123,7 @@
   At this point, we should have a basic CRUD API ready to run.
 
 - Run Server
-  
+
   ```sh
   python manage.py runserver
   ```
@@ -131,13 +131,13 @@
 ### Creating the frontend project structure
 
 - Create an App for the frontend
-  
+
   ```sh
   python manage.py startapp frontend
   ```
 
 - Make directory for frontend code
-  
+
   ```sh
   mkdir -p ./frontend/src/components
   mkdir -p ./frontend/{static,templates}/frontend
@@ -151,14 +151,168 @@
 
 - Move to root folder (same level as Pipfile)
 - Initialize npm project
-  
+
   ```sh
   npm init -y
   ```
 
   `-y` is used to skip answering questions, and use defaults
+
 - Install dev dependency
 
-  ```sh
-  npm i -D webpack webpack-cli
+  - Install webpack
+
+    ```sh
+    npm i -D webpack webpack-cli
+    ```
+
+  - Install babel
+
+    ```sh
+    npm i -D @babel/core babel-loader @babel/preset-env @babel/preset-react babel-plugin-transform-class-properties
+    ```
+
+  - Install react
+
+    ```sh
+    npm i react react-dom prop-types
+    ```
+
+  - Create .babelrc in root to be able to use the presets, and add the following to the file
+
+    ```json
+    {
+      "presets": ["@babel/preset-env", "@babel/preset-react"],
+      "plugins": ["transform-class-properties"]
+    }
+    ```
+
+  - Create webpack.config.js in root to load babel loader
+
+    ```javascript
+    module.exports = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+              loader: "babel-loader",
+            },
+          },
+        ],
+      },
+    };
+    ```
+
+  - Add scripts to package.json
+
+    ```json
+    "scripts": {
+      "dev": "webpack --mode development ./leadmanager/frontend/src/index.js --output ./leadmanager/frontend/static/frontend/main.js",
+      "build": "webpack --mode production ./leadmanager/frontend/src/index.js --output ./leadmanager/frontend/static/frontend/main.js"
+    }
+    ```
+
+    scripts can be run via `npm run build` and `npm run dev`.
+
+### Create React source code
+
+- Under src, create `index.js`
+
+  ```javascript
+  import App from "./components/App";
   ```
+
+- Under create App.js under src/components/app
+
+  ```javascript
+  import React, { Component } from "react";
+  import ReactDOM from "react-dom";
+
+  class App extends Component {
+    render() {
+      return <h1>React App</h1>;
+    }
+  }
+
+  ReactDOM.render(<App />, document.getElementById("app"));
+  ```
+
+- Create index.html under templates/frontend
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
+    <title>Lead Manager</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    {% load static %}
+    <script src="{% static "frontend/main.js" %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+  </html>
+  ```
+
+  `<script src="{% static "frontend/main.js" %}"></script>` is the Django syntax for templates.
+  Note in here, we've included bootstrap and corresponding bootstrap javascripts.
+
+### Adding frontend to Django
+
+- Add app to django project settings
+
+  ```py
+  INSTALLED_APPS = [
+      "frontend",
+  ]
+  ```
+
+- Add app template to frontend/views.py, so Django can display it
+
+  ```py
+  from django.shortcuts import render
+
+  def index(request):
+      return render(request, "frontend/index.html")
+  ```
+
+- Add url.
+
+  - In frontend, create urls.py.
+
+  ```py
+  from django.urls import path
+  from . import views
+
+  urlpatterns = [path("", views.index)]
+  ```
+
+  - In leadmanager/urls.py, add the url
+
+  ```py
+  urlpatterns = [
+    path("", include("frontend.urls")),
+    path("", include("leads.urls"))
+  ]
+  ```
+
+### Now test the app is up and running
+
+- run npm build
+
+  ```sh
+  npm run dev
+  ```
+
+- go to localhost:8000. You should see the react app.
+
+### Build the React app
+
+- src/layout/Header.js
