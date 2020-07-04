@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { getLeads, deleteLead } from "../../actions/leads";
 
 export class Leads extends Component {
-  static PropTypes = {
+  static propTypes = {
     leads: PropTypes.array.isRequired,
     getLeads: PropTypes.func.isRequired,
     deleteLead: PropTypes.func.isRequired,
@@ -19,13 +19,15 @@ export class Leads extends Component {
       <Fragment>
         <h2>Leads</h2>
         <table className="table table-striped">
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Message</th>
-            <th />
-          </tr>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Message</th>
+              <th />
+            </tr>
+          </thead>
           <tbody>
             {this.props.leads.map((lead) => (
               <tr key={lead.id}>
