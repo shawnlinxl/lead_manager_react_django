@@ -2,7 +2,7 @@
 
 [Tutorial](https://youtube.com/watch?v=Uyei2iDA4Hs) from Traversy Media on YouTube.
 
-## Workflow
+## Setting up Django Backend
 
 ### Setting up Django project
 
@@ -127,6 +127,8 @@
   ```sh
   python manage.py runserver
   ```
+
+## Setting up React Redux frontend
 
 ### Creating the frontend project structure
 
@@ -313,6 +315,8 @@
 
 - go to localhost:8000. You should see the react app.
 
+## Create the app
+
 ### Build the React app
 
 - Create src/layout/Header.js
@@ -365,3 +369,12 @@
   ```
 
 - Connect Leads component with redux
+- Add "dispatch" in asynchronous actions
+
+## Setup Authentication
+
+### Implement in backend
+
+- in leads, models.py, import default django user model
+- add owner field to leads
+- change permission settings in api.py
