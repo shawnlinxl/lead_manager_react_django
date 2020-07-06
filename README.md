@@ -376,5 +376,22 @@
 ### Implement in backend
 
 - in leads, models.py, import default django user model
+- make and run migration
 - add owner field to leads
 - change permission settings in api.py
+- Add django know to settings
+- Run migration
+
+### Start accounts app
+
+- add to leadmanager settings
+- create serializer
+- create API
+- create url
+
+### Add in front-end
+
+- Install react router
+  ```sh
+  npm i react-router-dom
+  ```
